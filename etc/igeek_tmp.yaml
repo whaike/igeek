@@ -6,7 +6,7 @@ Mysql:
 
 Minio:
   Endpoint: localhost
-  AccessKeyID: I9cRqdR6jsKrXt7C
-  SecretAccessKey: ljjOtnRpL9DBG3WEaM1AEI7E9NkwpdMG
+  AccessKeyID: xxx
+  SecretAccessKey: xxx
   UseSSL: false
 }
