@@ -1,0 +1,47 @@
+type (
+
+	// 全局API返回
+	ApiResp {
+		Code    int         `json:"code"`
+		Message string      `json:"message" default:"success"`
+		Data    interface{} `json:"data"`
+	}
+
+	ListCourseReq {
+		Name   string `form:"name,optional"`
+		Author string `form:"author,optional"`
+	}
+
+	CreateCourseReq {
+		Title  string `json:"title"`
+		Author string `json:"author"`
+		Source string `json:"source,optional"`
+	}
+
+	ListChapterReq {
+		CourseID int64 `json:"course_id"`
+	}
+	CreateChapterReq {
+		Title string `json:"title"`
+		CourseID int64 `json:"course_id"`
+		AudioID int64 `json:"audio_id"`
+		ContentKey string `json:"content_key"`
+	}
+)
+
+service igeek {
+	@handler ListCourse
+	get /course (ListCourseReq) returns (ApiResp)
+	
+	@handler CreateCourse
+	post /course (CreateCourseReq) returns (ApiResp)
+
+	@handler ListChapter
+	get /chapter (ListChapterReq) returns (ApiResp)
+
+	@handler CreateChapter
+	post /chapter ()
+}
+
+
+// goctl api go -api igeek.api -dir . -style go_zero
