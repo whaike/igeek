@@ -1,12 +1,12 @@
 Name: igeek
 Host: 0.0.0.0
 Port: 8888
+MaxBytes: 1048576000
 Mysql:
   DataSource: root:123456@tcp(127.0.0.1:3306)/igeek?parseTime=True&loc=Local&charset=utf8mb4&collation=utf8mb4_general_ci
 
 Minio:
-  Endpoint: localhost
-  AccessKeyID: xxx
-  SecretAccessKey: xxx
+  Endpoint: localhost:9000
+  AccessKeyID: I9cRqdR6jsKrXt7C
+  SecretAccessKey: ljjOtnRpL9DBG3WEaM1AEI7E9NkwpdMG
   UseSSL: false
-}
