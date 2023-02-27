@@ -7,8 +7,27 @@ type (
 		Data    interface{} `json:"data"`
 	}
 
+	FileUploadReq {
+		Types string `json:"types,optional"`
+		Title string `json:"title,optional"`
+		Ext   string `json:"ext,optional"`
+		Size  int64  `json:"size,optional"`
+		Path  string `json:"path,optional"`
+		Hash  string `json:"hash,optional"`
+		Bits  []byte `json:"bits,optional"`
+	}
+	FileUploadResp {
+		Code    int64  `json:"code"`
+		Message string `json:"message"`
+		Hash    string `json:"hash"`
+		Link    string `json:"link"`
+		Types   string `json:"types"`
+		Ext     string `json:"ext"`
+		AudioID int64  `json:"audio_id"`
+	}
+
 	ListCourseReq {
-		Name   string `form:"name,optional"`
+		Title  string `form:"title,optional"`
 		Author string `form:"author,optional"`
 	}
 
@@ -22,26 +41,33 @@ type (
 		CourseID int64 `json:"course_id"`
 	}
 	CreateChapterReq {
-		Title string `json:"title"`
-		CourseID int64 `json:"course_id"`
-		AudioID int64 `json:"audio_id"`
-		ContentKey string `json:"content_key"`
+		Title    string `json:"title"`
+		CourseID int64  `json:"course_id"`
+		AudioID  int64  `json:"audio_id"`
+		Hash     string `json:"hash"`
+		Link     string `json:"link"`
+		Ext      string `json:"ext"`
+		Content  string `json:"content,optional"`
 	}
 )
 
 service igeek {
+	@handler CreateCourse
+	post /course (CreateCourseReq) returns (ApiResp)
+	
 	@handler ListCourse
 	get /course (ListCourseReq) returns (ApiResp)
 	
-	@handler CreateCourse
-	post /course (CreateCourseReq) returns (ApiResp)
-
+	// 文件上传复和接口,上传音频或者文档到对象存储并返回相关信息
+	@handler FileUpload
+	post /file/upload (FileUploadReq) returns (FileUploadResp)
+	
 	@handler ListChapter
 	get /chapter (ListChapterReq) returns (ApiResp)
-
+	
 	@handler CreateChapter
-	post /chapter ()
+	post /chapter (CreateChapterReq) returns (ApiResp)
+	
 }
-
 
 // goctl api go -api igeek.api -dir . -style go_zero

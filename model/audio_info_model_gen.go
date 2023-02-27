@@ -36,7 +36,10 @@ type (
 
 	AudioInfo struct {
 		Id       int64  `db:"id"`        // 语音文件的唯一id
+		Title    string `db:"title"`     // 标题
+		Hash     string `db:"hash"`      // hash值
 		Link     string `db:"link"`      // 文件存储地址
+		Ext      string `db:"ext"`       // 文件后缀
 		Size     int64  `db:"size"`      // 文件大小(字节)
 		Duration int64  `db:"duration"`  // 文件时长(秒)
 		CreateAt string `db:"create_at"` // 创建时间
@@ -72,14 +75,14 @@ func (m *defaultAudioInfoModel) FindOne(ctx context.Context, id int64) (*AudioIn
 }
 
 func (m *defaultAudioInfoModel) Insert(ctx context.Context, data *AudioInfo) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?)", m.table, audioInfoRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.Link, data.Size, data.Duration)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?)", m.table, audioInfoRowsExpectAutoSet)
+	ret, err := m.conn.ExecCtx(ctx, query, data.Title, data.Hash, data.Link, data.Ext, data.Size, data.Duration)
 	return ret, err
 }
 
 func (m *defaultAudioInfoModel) Update(ctx context.Context, data *AudioInfo) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, audioInfoRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.Link, data.Size, data.Duration, data.Id)
+	_, err := m.conn.ExecCtx(ctx, query, data.Title, data.Hash, data.Link, data.Ext, data.Size, data.Duration, data.Id)
 	return err
 }
 

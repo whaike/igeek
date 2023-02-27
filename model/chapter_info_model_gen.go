@@ -37,8 +37,11 @@ type (
 	ChapterInfo struct {
 		Id       int64  `db:"id"`        // 主键ID
 		CourseId int64  `db:"course_id"` // 课程id
-		Title    string `db:"title"`     // 章节标题
 		AudioId  int64  `db:"audio_id"`  // 音频id
+		Title    string `db:"title"`     // 章节标题
+		Hash     string `db:"hash"`      // hash值
+		Link     string `db:"link"`      // 文件存储地址
+		Ext      string `db:"ext"`       // 文件后缀
 		Content  string `db:"content"`   // 文章内容
 		CreateAt string `db:"create_at"` // 创建时间
 		UpdateAt string `db:"update_at"` // 创建时间
@@ -73,14 +76,14 @@ func (m *defaultChapterInfoModel) FindOne(ctx context.Context, id int64) (*Chapt
 }
 
 func (m *defaultChapterInfoModel) Insert(ctx context.Context, data *ChapterInfo) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?)", m.table, chapterInfoRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.CourseId, data.Title, data.AudioId, data.Content)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, chapterInfoRowsExpectAutoSet)
+	ret, err := m.conn.ExecCtx(ctx, query, data.CourseId, data.AudioId, data.Title, data.Hash, data.Link, data.Ext, data.Content)
 	return ret, err
 }
 
 func (m *defaultChapterInfoModel) Update(ctx context.Context, data *ChapterInfo) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, chapterInfoRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.CourseId, data.Title, data.AudioId, data.Content, data.Id)
+	_, err := m.conn.ExecCtx(ctx, query, data.CourseId, data.AudioId, data.Title, data.Hash, data.Link, data.Ext, data.Content, data.Id)
 	return err
 }
 
